@@ -121,7 +121,7 @@ public class PlatformUtil {
 
     public PlatformUtil(RenderCommandQueue queue, List<FrameListener> frameListeners,
                         Context context, AssetManager assetManager) {
-        mContext = context;
+        mContext = context.getApplicationContext();
         mFrameListeners = frameListeners;
         mAssetManager = assetManager;
         mRenderQueue = queue;
