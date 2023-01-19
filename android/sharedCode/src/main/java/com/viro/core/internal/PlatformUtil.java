@@ -93,6 +93,7 @@ public class PlatformUtil {
                 Log.w("Viro", "Invalid task ID [0] provided for asynchronous task!");
                 return;
             }
+            Log.e("VIROCOREAJAY","PlatformUtil: TaskRunnable @Override run("+taskId+")");
 
             PlatformUtil.runTask(taskId);
             taskId = 0;
@@ -145,6 +146,7 @@ public class PlatformUtil {
     }
 
     public void dispose() {
+        Log.e("VIROCOREAJAY","PlatformUtil dispose");
 
         if (mVideoSinks != null && mFrameListeners != null) {
             // Ensure that all referenced video sinks that were created are cleaned up.
@@ -162,6 +164,8 @@ public class PlatformUtil {
         mContext = null;
         mFrameListeners = null;
         mRenderQueue = null;
+        if(mApplicationHandler != null)
+        mApplicationHandler.removeCallbacksAndMessages(null);
         mApplicationHandler = null;
     }
 
@@ -452,6 +456,7 @@ public class PlatformUtil {
      * asynchronously on a background thread
      */
     public void dispatchAsyncBackground(final int taskId) {
+        Log.e("VIROCOREAJAY","PlatformUtil: dispatchAsyncBackground "+taskId +"-> mExecutorService.execute(getTaskRunnable(taskId))");
         mExecutorService.execute(getTaskRunnable(taskId));
     }
 
@@ -470,7 +475,9 @@ public class PlatformUtil {
      * asynchronously on the application UI thread.
      */
     public void dispatchApplication(final int taskId) {
-        mApplicationHandler.post(getTaskRunnable(taskId));
+        Log.e("VIROCOREAJAY","PlatformUtil: dispatchApplication "+taskId +"-> mApplicationHandler.post(getTaskRunnable(taskId)");
+        boolean a = mApplicationHandler.post(getTaskRunnable(taskId));
+        Log.e("VIROCOREAJAY","PlatformUtil: dispatchApplication "+taskId +" returned boolean:"+a);
     }
 
     private static native void runTask(int taskId);
